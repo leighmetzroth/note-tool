@@ -1,7 +1,7 @@
-namespace NoteTool.Infrastructure;
-
 using Microsoft.Extensions.DependencyInjection;
 using Spectre.Console.Cli;
+
+namespace NoteTool.Infrastructure;
 
 public class TypeRegistrar : ITypeRegistrar
 {

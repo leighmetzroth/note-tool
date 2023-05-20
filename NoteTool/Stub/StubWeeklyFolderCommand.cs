@@ -1,5 +1,3 @@
-namespace NoteTool.Stub;
-
 using System.ComponentModel;
 using System.Globalization;
 using System.Text;
@@ -9,6 +7,8 @@ using NodaTime.Text;
 using NoteTool.Exceptions;
 using Spectre.Console;
 using Spectre.Console.Cli;
+
+namespace NoteTool.Stub;
 
 public class StubWeeklyFolderCommand : AsyncCommand<StubWeeklyFolderCommand.Settings>
 {
@@ -114,6 +114,9 @@ public class StubWeeklyFolderCommand : AsyncCommand<StubWeeklyFolderCommand.Sett
         return dateToCheck;
     }
 
+    private static string BuildDateSelection(LocalDate date, string descriptor) =>
+        $"{date.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture)} ({descriptor})";
+
     private LocalDate GetWeekStartingDate(Settings settings)
     {
         var (weekStarting, mostRecentMonday) = settings;
@@ -191,9 +194,6 @@ public class StubWeeklyFolderCommand : AsyncCommand<StubWeeklyFolderCommand.Sett
             throw new InvalidUserEntryException("The date entered is not valid");
         }
     }
-
-    private static string BuildDateSelection(LocalDate date, string descriptor) =>
-        $"{date.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture)} ({descriptor})";
 
     public class Settings : CommandSettings
     {

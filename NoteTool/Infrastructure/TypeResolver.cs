@@ -1,6 +1,6 @@
-namespace NoteTool.Infrastructure;
-
 using Spectre.Console.Cli;
+
+namespace NoteTool.Infrastructure;
 
 public class TypeResolver : ITypeResolver, IDisposable
 {
