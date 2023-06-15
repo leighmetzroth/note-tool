@@ -61,9 +61,12 @@ public class StubWeeklyFolderCommand : AsyncCommand<StubWeeklyFolderCommand.Sett
 
                 for (var i = 0; i <= 4; i++)
                 {
-                    workLogBuilder.AppendLine($"## {weekStarting.PlusDays(i)}");
+                    var day = weekStarting.PlusDays(i);
+                    workLogBuilder.AppendLine($"## {day}");
 
-                    foreach (var workLogTask in workLogOptions.WorkLogTasks)
+                    var dailyWorkLogs = GetDailyWorkLogTasks(day).Concat(workLogOptions.WorkLogTasks);
+
+                    foreach (var workLogTask in dailyWorkLogs)
                     {
                         workLogBuilder.AppendLine($"- [ ] {workLogTask}");
                     }
@@ -116,6 +119,19 @@ public class StubWeeklyFolderCommand : AsyncCommand<StubWeeklyFolderCommand.Sett
 
     private static string BuildDateSelection(LocalDate date, string descriptor) =>
         $"{date.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture)} ({descriptor})";
+
+    private string[] GetDailyWorkLogTasks(LocalDate date) =>
+        date.DayOfWeek switch
+        {
+            IsoDayOfWeek.Monday => workLogOptions.DailyWorkLogTasks?.Monday ?? Array.Empty<string>(),
+            IsoDayOfWeek.Tuesday => workLogOptions.DailyWorkLogTasks?.Tuesday ?? Array.Empty<string>(),
+            IsoDayOfWeek.Wednesday => workLogOptions.DailyWorkLogTasks?.Wednesday ?? Array.Empty<string>(),
+            IsoDayOfWeek.Thursday => workLogOptions.DailyWorkLogTasks?.Thursday ?? Array.Empty<string>(),
+            IsoDayOfWeek.Friday => workLogOptions.DailyWorkLogTasks?.Friday ?? Array.Empty<string>(),
+            IsoDayOfWeek.Saturday => workLogOptions.DailyWorkLogTasks?.Saturday ?? Array.Empty<string>(),
+            IsoDayOfWeek.Sunday => workLogOptions.DailyWorkLogTasks?.Sunday ?? Array.Empty<string>(),
+            _ => Array.Empty<string>(),
+        };
 
     private LocalDate GetWeekStartingDate(Settings settings)
     {
